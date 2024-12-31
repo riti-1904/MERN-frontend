@@ -6,7 +6,8 @@ pipeline {
 
     environment {
         NODEJS_HOME = 'C:\\Program Files\\nodejs'  // Set the Node.js path
-        SONAR_SCANNER_PATH = 'C:\\Users\\LENOVO\\Downloads\\sonar-scanner-cli-6.2.1.4610-windows-x64\\sonar-scanner-6.2.1.4610-windows-x64\\bin'
+        SONAR_SCANNER_PATH = 'C:\\Program Files\\sonar-scanner-cli-6.2.1.4610-windows-x64\\sonar-scanner-6.2.1.4610-windows-x64\\bin'
+
     }
 
     stages {
@@ -45,16 +46,18 @@ pipeline {
 
         stage('SonarQube Analysis') {
             environment {
-                SONAR_TOKEN = credentials('sonarqube-token') // Accessing the SonarQube token stored in Jenkins credentials
+                SONAR_TOKEN = credentials('SonarQube-Token-1') // Accessing the SonarQube token stored in Jenkins credentials
             }
             steps {
                 bat '''
                 set PATH=%SONAR_SCANNER_PATH%;%PATH%
                 where sonar-scanner || echo "SonarQube scanner not found. Please install it."
-                sonar-scanner -Dsonar.projectKey=mernstack ^
+                sonar-scanner -Dsonar.projectKey=MERN-Frontend ^
                               -Dsonar.sources=. ^
                               -Dsonar.host.url=http://localhost:9000 ^
                               -Dsonar.token=%SONAR_TOKEN%
+
+                              
                 '''
             }
         }
